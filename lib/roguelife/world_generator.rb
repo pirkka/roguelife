@@ -4,8 +4,8 @@ module WorldGenerator
 
   def self.generate
     puts 'Generating world...'
-    @world = World.new
-    return World
+    world = World.new
+    return world
   end
 
 end
