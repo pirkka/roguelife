@@ -16,10 +16,15 @@ module Roguelife
       tile_map = @game.world.get_height_map
       tile_map.each do |row| 
         row.each do |column|
-          print column
+          print Paint[(column/10).round, "#000", define_background_color(column)]
         end
         print "\n"
       end
+    end
+    
+    def define_background_color(column)
+      
+      ColorConversion.hue_to_rgb(110, 100, column)
     end
 
   end

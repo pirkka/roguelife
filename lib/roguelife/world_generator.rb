@@ -12,12 +12,20 @@ module WorldGenerator
   
   def self.generate_tiles
     tiles = []
+    rc = 0 
+    cc = 0
     (1..@@world_height).each do 
       row = []
       (1..@@world_width).each do 
-        row << rand(5)
+        height = 0
+        (1..10).each do
+          height += rand(10)
+        end
+        row << height
+        cc +=1
       end
       tiles << row
+      rc +=1
     end
     return tiles    
   end
