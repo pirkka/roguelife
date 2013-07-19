@@ -1,7 +1,7 @@
 require 'gosu'
 
 module ZOrder
-  Background, Stars, Player, UI = *0..3
+  Background, Tiles, Agents, Player, UI = *0..4
 end
 
 class GameWindow < Gosu::Window
@@ -16,6 +16,8 @@ class GameWindow < Gosu::Window
   
   def draw
     @font.draw("@", 200, 200, ZOrder::UI, 1.0, 1.0, 0xffffff00)
+    
+    draw_quad(0,0,0xFFFFFF00, 0,20, 0xFFFFFF00, 20,20, 0xFFFFFF00, 20,0, 0xFFFFFF00, 0)
   end
   
   def button_down(id)
