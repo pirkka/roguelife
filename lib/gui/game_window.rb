@@ -21,9 +21,8 @@ class GameWindow < Gosu::Window
   end
   
   def draw
-    @font.draw("@", 200, 200, ZOrder::UI, 1.0, 1.0, 0xffffff00)
-    
-    draw_quad(0, 0, 0xFFFFFF00, 0, UISettings::TileSize, 0xFFFFFF00, UISettings::TileSize, UISettings::TileSize, 0xFFFFFF00, UISettings::TileSize, 0, 0xFFFFFF00, 0)
+    draw_tiles
+    draw_agents
   end
   
   def button_down(id)
@@ -31,6 +30,15 @@ class GameWindow < Gosu::Window
     if id == Gosu::KbEscape
       close
     end
+  end
+  
+  # drawing
+  def draw_tiles
+    draw_quad(0, 0, 0xFFFFFF00, 0, UISettings::TileSize, 0xFFFFFF00, UISettings::TileSize, UISettings::TileSize, 0xFFFFFF00, UISettings::TileSize, 0, 0xFFFFFF00, 0)
+  end
+  
+  def draw_agents
+    @font.draw("@", 200, 200, ZOrder::UI, 1.0, 1.0, 0xffffff00)
   end
   
 end
