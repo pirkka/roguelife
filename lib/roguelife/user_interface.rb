@@ -20,6 +20,9 @@ module Roguelife
         end
         print "\n"
       end
+      
+      window = GameWindow.new
+      window.show
     end
     
     def define_background_color(column)
