@@ -2,7 +2,7 @@ require 'gosu'
 
 class GameWindow < Gosu::Window
   def initialize
-    super 640, 480, false
+    super 800, 800, false
     self.caption = "Roguelife"
   end
   
@@ -11,4 +11,12 @@ class GameWindow < Gosu::Window
   
   def draw
   end
+  
+  def button_down(id)
+    puts 'button down'
+    if id == Gosu::KbEscape
+      close
+    end
+  end
+  
 end
