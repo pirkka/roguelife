@@ -11,6 +11,9 @@ module ZOrder
 end
 
 class GameWindow < Gosu::Window
+  
+  attr_accessor :game
+  
   def initialize
     super UISettings::WindowWidth, UISettings::WindowHeight, false
     self.caption = "Roguelife"
@@ -34,6 +37,7 @@ class GameWindow < Gosu::Window
   
   # drawing
   def draw_tiles
+    puts "drawing tiles #{self.game.world.tiles.size}"
     draw_quad(0, 0, 0xFFFFFF00, 0, UISettings::TileSize, 0xFFFFFF00, UISettings::TileSize, UISettings::TileSize, 0xFFFFFF00, UISettings::TileSize, 0, 0xFFFFFF00, 0)
   end
   
