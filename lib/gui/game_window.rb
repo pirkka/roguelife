@@ -62,7 +62,7 @@ class GameWindow < Gosu::Window
   end
   
   def draw_agents
-    @font.draw("@", 200, 200, ZOrder::UI, 1.0, 1.0, 0xffffff00)
+    @font.draw("@", 203, 202, ZOrder::UI, 1.0, 1.0, 0xffffffff)
   end
 
   def define_background_color(altitude)  
