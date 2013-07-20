@@ -27,7 +27,7 @@ module Roguelife
     
     def define_background_color(column)
       
-      ColorConversion.hue_to_rgb(110, 100, column)
+      ColorConversion.hue_to_hex(110, 100, column)
     end
 
   end

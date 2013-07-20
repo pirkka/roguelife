@@ -1,4 +1,26 @@
 module ColorConversion
+
+  def self.hsl_to_gosu (hue,saturation,luminence)
+    r,g,b = self.hue_to_rgb(hue,saturation,luminence)
+    color = Gosu::Color.new(0xff000000)
+    color.red = r
+    color.green = g
+    color.blue = b
+    return color
+  end
+
+  def self.hue_to_hex (hue,saturation,luminence)
+    
+    r,g,b = self.hue_to_rgb(hue,saturation,luminence)
+    
+    rs = float_to_html_hex(r)
+    gs = float_to_html_hex(g)
+    bs = float_to_html_hex(b)
+    
+    hex = '#' + rs + gs + bs    
+    return hex
+  end
+    
   def self.hue_to_rgb (hue,saturation,luminence)
     
     # hue on jotain väliltä 1-360
@@ -52,12 +74,7 @@ module ColorConversion
       
     end
     
-    rs = float_to_html_hex(r)
-    gs = float_to_html_hex(g)
-    bs = float_to_html_hex(b)
-    
-    return '#' + rs + gs + bs
-    
+    return r, g, b
   end
   
   # Converts a floating point number to a hex number.

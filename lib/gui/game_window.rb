@@ -37,7 +37,7 @@ class GameWindow < Gosu::Window
   
   # drawing
   def draw_tiles
-    puts "drawing tiles #{self.game.world.tiles.size}"
+    # puts "drawing tiles #{self.game.world.tiles.size}"
     tile_map = @game.world.get_height_map
     x = y = 0
     tile_map.each do |row| 
@@ -58,15 +58,15 @@ class GameWindow < Gosu::Window
   end
   
   def draw_tile(x,y,c)
-    draw_quad(x, y, 0xFFFFFF00, x, y+UISettings::TileSize, 0xFFFFFF00, x+UISettings::TileSize, y+UISettings::TileSize, 0xFFFFFF00, x+UISettings::TileSize, y, 0xFFFFFF00, 0)    
+    draw_quad(x, y, c, x, y+UISettings::TileSize, c, x+UISettings::TileSize, y+UISettings::TileSize, c, x+UISettings::TileSize, y, c, 0)    
   end
   
   def draw_agents
     @font.draw("@", 200, 200, ZOrder::UI, 1.0, 1.0, 0xffffff00)
   end
 
-  def define_background_color(column)  
-    ColorConversion.hue_to_rgb(110, 100, column)
+  def define_background_color(altitude)  
+    ColorConversion.hsl_to_gosu(110, 100, altitude)
   end
   
   
