@@ -21,11 +21,13 @@ class GameWindow < Gosu::Window
   end
   
   def update
+    game.update
   end
   
   def draw
     draw_tiles
     draw_agents
+    draw_time
   end
   
   def button_down(id)
@@ -42,7 +44,7 @@ class GameWindow < Gosu::Window
     x = y = 0
     tile_map.each do |row| 
       row.each do |column|
-        draw_tile_logic(x,y,column)
+        draw_tile(x,y,column)
         x += 1
       end
       y += 1
@@ -50,14 +52,14 @@ class GameWindow < Gosu::Window
     end
   end
   
-  def draw_tile_logic(x,y,a)
+  def draw_tile(x,y,a)
     pixel_x = x * UISettings::TileSize
     pixel_y = y * UISettings::TileSize
     c = define_background_color(a)
-    draw_tile(pixel_x,pixel_y,c)
+    draw_square(pixel_x,pixel_y,c)
   end
   
-  def draw_tile(x,y,c)
+  def draw_square(x,y,c)
     draw_quad(x, y, c, x, y+UISettings::TileSize, c, x+UISettings::TileSize, y+UISettings::TileSize, c, x+UISettings::TileSize, y, c, 0)    
   end
   
@@ -65,9 +67,13 @@ class GameWindow < Gosu::Window
     @font.draw("@", 203, 202, ZOrder::UI, 1.0, 1.0, 0xffffffff)
   end
 
+  def draw_time
+    @font.draw("Time: #{@game.world.time}", 10, 660, ZOrder::UI, 1.0, 1.0, 0xffffffff)
+    @font.draw("Actions scheduled: #{@game.world.agent_actions.size}", 10, 680, ZOrder::UI, 1.0, 1.0, 0xffffffff)
+  end
+
   def define_background_color(altitude)  
     ColorConversion.hsl_to_gosu(110, 100, altitude)
   end
-  
-  
+    
 end

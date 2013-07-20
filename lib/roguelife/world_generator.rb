@@ -6,10 +6,10 @@ module Roguelife
   
     def self.generate
       puts 'Generating world...'
-      world = World.new
-      world.tiles = self.generate_tiles
-      world.agents = self.generate_agents
-      return world
+      @world = World.new
+      @world.tiles = self.generate_tiles
+      self.generate_agents
+      return @world
     end
   
     def self.generate_tiles
@@ -34,12 +34,11 @@ module Roguelife
 
     def self.generate_agents
       # let's just create one "egg" agent to start the proceedings. it will eventually create the player as well
-      a = []
-      # egg = Roguelife::Egg.new
-      # egg.x = 10
-      # egg.y = 10
-      # agents << egg
-      return a
+      egg = Roguelife::Egg.new
+      egg.x = 10
+      egg.y = 10
+      @world.agents << egg
+      @world.agent_actions << AgentAction.new(egg)
     end
   end
 end

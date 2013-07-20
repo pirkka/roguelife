@@ -10,3 +10,4 @@ require 'paint'
 path = File.dirname(__FILE__)
 
 Dir[path + '/*/*.rb'].each {|file| require file }
+Dir[path + '/*/*/*.rb'].each {|file| require file }
