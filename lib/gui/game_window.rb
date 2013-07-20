@@ -65,6 +65,9 @@ class GameWindow < Gosu::Window
   
   def draw_agents
     @font.draw("@", 203, 202, ZOrder::UI, 1.0, 1.0, 0xffffffff)
+    @game.world.agents.each do |agent|
+      @font.draw(agent.char, UISettings::TileSize*agent.x + 3, UISettings::TileSize*agent.y + 2, ZOrder::UI, 1.0, 1.0, 0xffffffff)
+    end
   end
 
   def draw_time

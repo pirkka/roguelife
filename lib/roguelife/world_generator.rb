@@ -34,11 +34,9 @@ module Roguelife
 
     def self.generate_agents
       # let's just create one "egg" agent to start the proceedings. it will eventually create the player as well
-      egg = Roguelife::Egg.new
-      egg.x = 10
-      egg.y = 10
+      egg = Roguelife::Egg.new(3,7)
       @world.agents << egg
-      @world.agent_actions << AgentAction.new(egg)
+      @world.agent_actions << egg.get_action(@world)
     end
   end
 end

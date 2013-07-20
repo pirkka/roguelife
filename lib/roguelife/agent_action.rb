@@ -8,7 +8,7 @@ class AgentAction
   end
 
   def resolve
-    "Initial action for #{self.agent}"
+    raise 'never attempt to use AgentAction class directly'
   end
   
 end
