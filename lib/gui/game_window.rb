@@ -92,7 +92,7 @@ class GameWindow < Gosu::Window
   end
 
   def define_background_color(altitude)  
-    ColorConversion.hsl_to_gosu(110, 100, altitude)
+    ColorConversion.hsl_to_gosu(110, 100, 50+altitude*4)
   end
     
 end
