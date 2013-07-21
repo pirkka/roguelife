@@ -52,6 +52,7 @@ module Roguelife
       puts @agent.x
       @agent.x += @agent.x_speed
       @agent.y += @agent.y_speed
+      puts @agent.x
       if @agent.x > 25
         @agent.x = 25
         @agent.x_speed *= -1

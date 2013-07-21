@@ -41,7 +41,11 @@ class Game
   def debug
     puts 'ACTION LIST'
     @world.actions.each do |action|
-      puts [action.time, action.agent.char, action.class]
+      puts action
+    end
+    puts 'AGENT LIST'
+    @world.agents.each do |action|
+      puts action
     end
   end
    

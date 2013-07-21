@@ -35,7 +35,7 @@ class GameWindow < Gosu::Window
     if id == Gosu::KbEscape
       close
     end
-    if id == Gosu::KbP
+    if id == Gosu::KbD
       game.debug
     end
     if id == Gosu::KbA

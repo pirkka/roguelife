@@ -11,4 +11,8 @@ class Action
     raise 'never attempt to use Action class directly'
   end
   
+  def to_s
+    "#{self.time}: #{self.class} - #{self.agent}"
+  end
+  
 end

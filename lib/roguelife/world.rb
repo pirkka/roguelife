@@ -41,7 +41,9 @@ class World
   
   def remove_agent(agent)
     @agents.delete(agent)
-    @actions.select! {|x| x.agent != agent}
+    puts @actions
+    @actions.select! {|x| x.agent.object_id != agent.object_id}
+    puts @actions
   end
   
 end
