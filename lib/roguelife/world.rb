@@ -14,15 +14,22 @@ class World
 
   def resolve_next_agent_action
     unless @agent_actions.empty?
-      puts "agent action: #{agent_actions.first}"
-      @time = @agent_actions.first.time
+      @time = @agent_actions.first.time # important & planned side effect: advancing the world clock
       agent = @agent_actions.first.agent
-      puts @agent_actions.first
-      puts "agent: #{agent}"
       @agent_actions.first.resolve
-      @agent_actions.pop
+      @agent_actions.shift
       @agent_actions.push(agent.get_action(self))
     end
+  end
+  
+  def insert_agent_action(agent_action)
+    @agent_actions.each do |existing_action|
+      if existing_action.time > agent_action.time
+        @agent_actions.insert(@agent_actions.index(existing_action), agent_action)
+        return
+      end
+    end
+    @agent_actions.push(agent_action)
   end
   
   def insert_agent(agent)
