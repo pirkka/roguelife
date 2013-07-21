@@ -14,13 +14,14 @@ class World
 
   def resolve_next_action
     unless @actions.empty?
-      @time = @actions.first.time # important & planned side effect: advancing the world clock
-      puts @actions.map {|x| x.time}
-      agent = @actions.first.agent
-      @actions.first.resolve(self)
-      @actions.shift
+      puts ">>> RESOLVING NEXT"
+      action = @actions.shift
+      action.resolve(self)
+      @time = action.time # important & planned side effect: advancing the world clock
+      agent = action.agent
+      
       # if agent is still here - should this actually happen in the action? what if agent has gone away?
-      @actions.push(agent.get_action(self))
+      #@actions.push(agent.get_action(self))
     end
   end
   
@@ -41,9 +42,7 @@ class World
   
   def remove_agent(agent)
     @agents.delete(agent)
-    puts @actions
     @actions.select! {|x| x.agent.object_id != agent.object_id}
-    puts @actions
   end
   
 end

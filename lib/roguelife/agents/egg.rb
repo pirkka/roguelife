@@ -14,7 +14,7 @@ module Roguelife
     end
     
     def get_action(world)
-      if (rand(100) == 0)
+      if (rand(10) == 0)
         EggCrack.new(self, world.time)
       else
         EggBounce.new(self, world.time)
@@ -47,12 +47,8 @@ module Roguelife
     end
     
     def resolve(world)
-      puts '!'
-      puts @agent.x_speed
-      puts @agent.x
       @agent.x += @agent.x_speed
       @agent.y += @agent.y_speed
-      puts @agent.x
       if @agent.x > 25
         @agent.x = 25
         @agent.x_speed *= -1
@@ -70,7 +66,7 @@ module Roguelife
         @agent.y_speed *= -1
       end
       # then - bounce again
-      
+      world.insert_action(@agent.get_action(world))
     end
     
   end

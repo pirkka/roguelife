@@ -36,18 +36,19 @@ class GameWindow < Gosu::Window
       close
     end
     if id == Gosu::KbD
-      game.debug
+      @game.debug
     end
     if id == Gosu::KbA
-      if game.paused?
-        game.world.resolve_next_action
+      if @game.paused?
+        @game.world.resolve_next_action
+        @game.debug
       end
     end
     if id == Gosu::KbSpace
-      if game.paused?
-        game.unpause
+      if @game.paused?
+        @game.unpause
       else
-        game.pause
+        @game.pause
       end
     end
   end

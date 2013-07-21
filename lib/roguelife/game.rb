@@ -19,6 +19,7 @@ class Game
 
   def initialize
     @messages_to_player = []
+    @paused = true
   end
   
   def time
@@ -34,11 +35,12 @@ class Game
     # later on it could render all simulation steps until reaching to the player sim step (game pauses until player decides)
     
     self.world.resolve_next_action 
-    
   end
   
   # print out various things
   def debug
+    puts '-------------------------------------------------------------------------------'
+    puts "TIME #{self.time}"
     puts 'ACTION LIST'
     @world.actions.each do |action|
       puts action

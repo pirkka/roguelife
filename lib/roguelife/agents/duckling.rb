@@ -29,6 +29,7 @@ module Roguelife
       when 3
         @agent.y -= 1
       end
+      world.insert_action(@agent.get_action(world))
     end
   end
   

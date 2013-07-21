@@ -1,7 +1,7 @@
 module Roguelife
   class Agent
     
-    attr_accessor :x, :y
+    attr_accessor :x, :y, :name
     
     def char
       'a'
@@ -9,10 +9,13 @@ module Roguelife
     
     def initialize (x,y)
       @x, @y = x, y
+      @name = Names.random_name
+      puts "#{self.class} #{@name} is created"
     end
     
     def to_s
-      "#{self.class} at #{@x},#{@y} (#{self.char}) #{self.object_id}"
+      "#{self.class} #{@name} at #{@x},#{@y} (#{self.char}) #{self.object_id}"
     end
+        
   end
 end
