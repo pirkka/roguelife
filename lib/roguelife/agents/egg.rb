@@ -18,7 +18,7 @@ module Roguelife
     end
   end
   
-  class EggBounce < AgentAction
+  class EggBounce < Action
     
     def initialize(egg, time)
       @agent = egg

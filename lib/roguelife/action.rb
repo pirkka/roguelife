@@ -1,4 +1,4 @@
-class AgentAction
+class Action
   
   attr_reader :agent, :time
   
@@ -8,7 +8,7 @@ class AgentAction
   end
 
   def resolve
-    raise 'never attempt to use AgentAction class directly'
+    raise 'never attempt to use Action class directly'
   end
   
 end
