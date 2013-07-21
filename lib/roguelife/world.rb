@@ -25,4 +25,9 @@ class World
     end
   end
   
+  def insert_agent(agent)
+    @agents << agent
+    @agent_actions << agent.get_action(self)
+  end
+  
 end
