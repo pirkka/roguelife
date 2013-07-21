@@ -2,12 +2,12 @@ class Action
   
   attr_reader :agent, :time
   
-  def initialize(agent)
+  def initialize(agent, time)
     @agent = agent
-    @time = 0
+    @time = time + 1
   end
 
-  def resolve
+  def resolve(world)
     raise 'never attempt to use Action class directly'
   end
   

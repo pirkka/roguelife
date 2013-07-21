@@ -1,10 +1,10 @@
 class World
   
-  attr_accessor :tiles, :agents, :time, :agent_actions
+  attr_accessor :tiles, :agents, :time, :actions
   
   def initialize
     @time = 0
-    @agent_actions = []
+    @actions = []
     @agents = []
   end
   
@@ -12,29 +12,36 @@ class World
     return tiles
   end
 
-  def resolve_next_agent_action
-    unless @agent_actions.empty?
-      @time = @agent_actions.first.time # important & planned side effect: advancing the world clock
-      agent = @agent_actions.first.agent
-      @agent_actions.first.resolve
-      @agent_actions.shift
-      @agent_actions.push(agent.get_action(self))
+  def resolve_next_action
+    unless @actions.empty?
+      @time = @actions.first.time # important & planned side effect: advancing the world clock
+      puts @actions.map {|x| x.time}
+      agent = @actions.first.agent
+      @actions.first.resolve(self)
+      @actions.shift
+      # if agent is still here - should this actually happen in the action? what if agent has gone away?
+      @actions.push(agent.get_action(self))
     end
   end
   
-  def insert_agent_action(agent_action)
-    @agent_actions.each do |existing_action|
-      if existing_action.time > agent_action.time
-        @agent_actions.insert(@agent_actions.index(existing_action), agent_action)
+  def insert_action(action)
+    @actions.each do |existing_action|
+      if existing_action.time > action.time
+        @actions.insert(@actions.index(existing_action), action)
         return
       end
     end
-    @agent_actions.push(agent_action)
+    @actions.push(action)
   end
   
   def insert_agent(agent)
     @agents << agent
-    @agent_actions << agent.get_action(self)
+    @actions << agent.get_action(self)
+  end
+  
+  def remove_agent(agent)
+    @agents.delete(agent)
+    @actions.select! {|x| x.agent != agent}
   end
   
 end

@@ -35,6 +35,21 @@ class GameWindow < Gosu::Window
     if id == Gosu::KbEscape
       close
     end
+    if id == Gosu::KbP
+      game.debug
+    end
+    if id == Gosu::KbA
+      if game.paused?
+        game.world.resolve_next_action
+      end
+    end
+    if id == Gosu::KbSpace
+      if game.paused?
+        game.unpause
+      else
+        game.pause
+      end
+    end
   end
   
   # drawing
@@ -72,7 +87,7 @@ class GameWindow < Gosu::Window
 
   def draw_time
     @font.draw("Time: #{@game.world.time}", 10, 660, ZOrder::UI, 1.0, 1.0, 0xffffffff)
-    @font.draw("Actions scheduled: #{@game.world.agent_actions.size}", 10, 680, ZOrder::UI, 1.0, 1.0, 0xffffffff)
+    @font.draw("Actions scheduled: #{@game.world.actions.size}", 10, 680, ZOrder::UI, 1.0, 1.0, 0xffffffff)
   end
 
   def define_background_color(altitude)  
