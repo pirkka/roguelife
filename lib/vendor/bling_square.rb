@@ -34,7 +34,7 @@ class BlingSquare
     end
 
     sections_per_dimension = (@size-1)/(segment_size-1)
-    puts "Applying diamond to #{sections_per_dimension**2} segments"
+    puts "<><><><> applying diamond to #{sections_per_dimension**2} segments"
 
     x1 = 0
     y1 = 0
@@ -43,7 +43,6 @@ class BlingSquare
       y2 = y1 + segment_size - 1
       while x1 < @size-1 do 
         x2 = x1 + segment_size - 1
-        puts "<><><><>"
         self.execute_diamond_step(x1, y1, x2, y2, h)
         x1 = x2
       end
@@ -52,7 +51,7 @@ class BlingSquare
     end
 
 
-    puts "Applying square to #{sections_per_dimension**2} segments"
+    puts "[][][][] applying square to #{sections_per_dimension**2} segments"
 
     x1 = 0
     y1 = 0
@@ -61,7 +60,6 @@ class BlingSquare
       y2 = y1 + segment_size - 1
       while x1 < @size-1 do 
         x2 = x1 + segment_size - 1
-        puts "[][][][]"
         self.execute_square_step(x1, y1, x2, y2, h)
         x1 = x2
       end
@@ -75,7 +73,7 @@ class BlingSquare
   end
   
   def execute_diamond_step(x1,y1,x2,y2,h)
-    puts "Diamond Step at #{x1},#{y1} - #{x2},#{y2} - h: #{h}"
+    # puts "Diamond Step at #{x1},#{y1} - #{x2},#{y2} - h: #{h}"
     # diamond step
     northwest = get_value x1,y1
     northeast = get_value x2,y1
@@ -90,40 +88,36 @@ class BlingSquare
   end
   
   def set(x,y,v)
-    puts "setting (#{x},#{y}) --> #{v}"
+    # puts "setting (#{x},#{y}) --> #{v}"
     @height_map[y][x] = v
   end
   
   def execute_square_step(x1,y1,x2,y2,h)
-    puts "Square Step at #{x1},#{y1} - #{x2},#{y2} - h: #{h}"
+    # puts "Square Step at #{x1},#{y1} - #{x2},#{y2} - h: #{h}"
     # square step
     centerpoint_x = (x1+x2)/2
     centerpoint_y = (y1+y2)/2
     # calculate n,w,e,s
     # first north
-    puts 'north'
+    #puts 'north'
     naive_north = self.avg([get_value(x1,y1), get_value(x2,y1), get_value((x1+x2)/2, (y1+y2)/2), get_value((x1+x2)/2, y1-((y2-y1)/2))])
     north = naive_north + get_random_component(h)
-    @height_map[y1][centerpoint_x] = north
-    # puts "north: #{north}"
+    set(centerpoint_x,y1,north)
 
-    puts 'south'
+    #puts 'south'
     naive_south = self.avg([get_value(x1,y2), get_value(x2,y2), get_value((x1+x2)/2, (y1+y2)/2), get_value((x1+x2)/2, y2+(y2-y1)/2)])
     south = naive_south + get_random_component(h)
-    @height_map[y2][centerpoint_x] = south
-    # puts "south: #{south}"
+    set(centerpoint_x,y2,south)
 
-    puts 'west'
+    #puts 'west'
     naive_west = self.avg([get_value(x1,y1), get_value(x1,y2), get_value((x1+x2)/2, (y1+y2)/2), get_value(x1-(x2-x1)/2, (y1+y2)/2)])
     west = naive_west + get_random_component(h)
-    @height_map[centerpoint_y][x1] = west
-    # puts "west: #{west}"
+    set(x1,centerpoint_y,west)
 
-    puts 'east'
+    #puts 'east'
     naive_east = self.avg([get_value(x2,y1), get_value(x2,y2), get_value((x1+x2)/2, (y1+y2)/2), get_value(x2+(x2-x1)/2, (y1+y2)/2)])
     east = naive_east + get_random_component(h)
-    @height_map[centerpoint_y][x2] = east
-    # puts "east: #{east}"
+    set(x2,centerpoint_y, east)
         
   end
 
