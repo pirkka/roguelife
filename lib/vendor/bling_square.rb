@@ -31,10 +31,27 @@ class BlingSquare
     # square step
     # calculate n,w,e,s
     # first north
-    naive_north = self.avg([get_value(x1,y1), get_value(x2,y1), get_value(x1+x2/2, y1+y2/2), get_value(x1+x2/2, y1-y2/2)])
+    naive_north = self.avg([get_value(x1,y1), get_value(x2,y1), get_value(x1+x2/2, y1+y2/2), get_value(x1+x2/2, y1+(y1-y2/2))])
     north = naive_north + get_random_component(h)
     @height_map[y1][centerpoint_x] = north
     puts "north: #{north}"
+
+    naive_south = self.avg([get_value(x1,y2), get_value(x2,y2), get_value(x1+x2/2, y1+y2/2), get_value(x1+x2/2, y2+(y1-y2)/2)])
+    south = naive_south + get_random_component(h)
+    @height_map[y2][centerpoint_x] = south
+    puts "south: #{south}"
+
+    naive_west = self.avg([get_value(x1,y1), get_value(x1,y2), get_value(x1+x2/2, y1+y2/2), get_value(x1-(x2-x1)/2, y1+y2/2)])
+    west = naive_west + get_random_component(h)
+    @height_map[centerpoint_y][x1] = west
+    puts "west: #{west}"
+
+    naive_east = self.avg([get_value(x2,y1), get_value(x2,y2), get_value(x1+x2/2, y1+y2/2), get_value(x2+(x2-x1)/2, y1+y2/2)])
+    east = naive_east + get_random_component(h)
+    @height_map[centerpoint_y][x2] = east
+    puts "east: #{east}"
+    
+    
   end
 
   def get_random_component(h)
