@@ -2,8 +2,12 @@ module Roguelife
   class WorldGenerator 
     
     def self.generate_tiles_with_diamond_square
-      ds = BlingSquare.new(2)
-      return ds.get_map
+      ds = BlingSquare.new(4)
+      map = ds.get_map
+      map.each do |row|
+        row.map! {|x| ((x+0.9)/2*10).round}
+      end
+      return map
     end
 
     def self.generate_tiles_with_height_map

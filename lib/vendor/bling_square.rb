@@ -25,7 +25,7 @@ class BlingSquare
     # let's drill down the whole map part by part
     puts "------------------------------------"
     puts "Drilldown #{level} / #{h}"
-    segment_size = (@size.to_f/level).round
+    segment_size = (@size.to_f/(2**(level-1))).ceil
     puts "segment size is #{segment_size}"
 
     if segment_size < 3
@@ -101,25 +101,29 @@ class BlingSquare
     centerpoint_y = (y1+y2)/2
     # calculate n,w,e,s
     # first north
-    naive_north = self.avg([get_value(x1,y1), get_value(x2,y1), get_value((x1+x2)/2, (y1+y2)/2), get_value((x1+x2)/2, y1+(y1-y2/2))])
+    puts 'north'
+    naive_north = self.avg([get_value(x1,y1), get_value(x2,y1), get_value((x1+x2)/2, (y1+y2)/2), get_value((x1+x2)/2, y1-((y2-y1)/2))])
     north = naive_north + get_random_component(h)
     @height_map[y1][centerpoint_x] = north
-    puts "north: #{north}"
+    # puts "north: #{north}"
 
+    puts 'south'
     naive_south = self.avg([get_value(x1,y2), get_value(x2,y2), get_value((x1+x2)/2, (y1+y2)/2), get_value((x1+x2)/2, y2+(y2-y1)/2)])
     south = naive_south + get_random_component(h)
     @height_map[y2][centerpoint_x] = south
-    puts "south: #{south}"
+    # puts "south: #{south}"
 
+    puts 'west'
     naive_west = self.avg([get_value(x1,y1), get_value(x1,y2), get_value((x1+x2)/2, (y1+y2)/2), get_value(x1-(x2-x1)/2, (y1+y2)/2)])
     west = naive_west + get_random_component(h)
     @height_map[centerpoint_y][x1] = west
-    puts "west: #{west}"
+    # puts "west: #{west}"
 
+    puts 'east'
     naive_east = self.avg([get_value(x2,y1), get_value(x2,y2), get_value((x1+x2)/2, (y1+y2)/2), get_value(x2+(x2-x1)/2, (y1+y2)/2)])
     east = naive_east + get_random_component(h)
     @height_map[centerpoint_y][x2] = east
-    puts "east: #{east}"
+    # puts "east: #{east}"
         
   end
 
@@ -144,7 +148,10 @@ class BlingSquare
     if y < 0
       y = @size - 1 + y
     end
-    puts "get(#{initial_x},#{initial_y}) -> effective value(#{x},#{y}) --> #{@height_map[x][y]}"
+    retval = @height_map[x][y]
+    unless retval
+      puts "VALUE NOT FOUND get(#{initial_x},#{initial_y}) -> effective value(#{x},#{y}) --> #{@height_map[x][y]}"
+    end
     return @height_map[x][y]
   end
   
@@ -153,7 +160,13 @@ class BlingSquare
   end
   
   def avg(list)
-    list.reduce(:+).to_f / list.size
+    begin
+      list.reduce(:+).to_f / list.size
+    rescue
+      raise 'x'
+      puts "ERROR"
+      return 0
+    end
   end
   
 end

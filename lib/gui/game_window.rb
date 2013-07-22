@@ -73,7 +73,7 @@ class GameWindow < Gosu::Window
     pixel_y = y * UISettings::TileSize
     c = define_background_color(a)
     draw_square(pixel_x,pixel_y,c)
-    @font.draw(convert_float_to_tenz(a), UISettings::TileSize*x + 2, UISettings::TileSize*y + 1, ZOrder::UI, 1.0, 1.0, 0xffffffff)
+    @font.draw(a, UISettings::TileSize*x + 2, UISettings::TileSize*y + 1, ZOrder::UI, 1.0, 1.0, 0xffffffff)
   end
   
   def draw_square(x,y,c)
