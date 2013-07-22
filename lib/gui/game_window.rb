@@ -73,6 +73,7 @@ class GameWindow < Gosu::Window
     pixel_y = y * UISettings::TileSize
     c = define_background_color(a)
     draw_square(pixel_x,pixel_y,c)
+    @font.draw(convert_float_to_tenz(a), UISettings::TileSize*x + 2, UISettings::TileSize*y + 1, ZOrder::UI, 1.0, 1.0, 0xffffffff)
   end
   
   def draw_square(x,y,c)
@@ -96,6 +97,14 @@ class GameWindow < Gosu::Window
       altitude = 0
     end
     ColorConversion.hsl_to_gosu(110, 100, 50+altitude*4)
+  end
+
+  def convert_float_to_tenz(f)
+    if f
+      ((f*10+10)/2).round
+    else
+      ' '
+    end
   end
     
 end

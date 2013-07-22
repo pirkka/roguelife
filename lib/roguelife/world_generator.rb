@@ -2,7 +2,7 @@ module Roguelife
   class WorldGenerator 
     
     def self.generate_tiles_with_diamond_square
-      ds = BlingSquare.new(6)
+      ds = BlingSquare.new(1)
       return ds.get_map
     end
 
