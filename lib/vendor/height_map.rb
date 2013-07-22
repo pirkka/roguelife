@@ -1,5 +1,6 @@
 class HeightMap
   attr_reader :width, :height
+  
   def initialize(width, height)
     @grid = Array.new(height){Array.new(width){0}}
     @width = width

@@ -1,9 +1,9 @@
 require 'gosu'
 
 module UISettings
-  TileSize = 25
-  WindowWidth = 800
-  WindowHeight = 800
+  TileSize = 14
+  WindowWidth = 910
+  WindowHeight = 910
 end
 
 module ZOrder
@@ -87,8 +87,8 @@ class GameWindow < Gosu::Window
   end
 
   def draw_time
-    @font.draw("Time: #{@game.world.time}", 10, 660, ZOrder::UI, 1.0, 1.0, 0xffffffff)
-    @font.draw("Actions scheduled: #{@game.world.actions.size}", 10, 680, ZOrder::UI, 1.0, 1.0, 0xffffffff)
+    @font.draw("Time: #{@game.world.time}", 10, 860, ZOrder::UI, 1.0, 1.0, 0xffffffff)
+    @font.draw("Actions scheduled: #{@game.world.actions.size}", 10, 880, ZOrder::UI, 1.0, 1.0, 0xffffffff)
   end
 
   def define_background_color(altitude)  

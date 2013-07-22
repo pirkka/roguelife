@@ -1,8 +1,8 @@
 module Roguelife
   class WorldGenerator 
 
-    @@world_width = 90
-    @@world_height = 26
+    @@world_width = 65
+    @@world_height = 65
   
     def self.generate
       puts 'Generating world...'
