@@ -22,7 +22,7 @@ module Roguelife
           if !column
             column = 0
           end
-          print Paint[(column/10).round, "#0c0", define_background_color(column)]
+          print Paint[column, "#0c0", define_background_color(column)]
         end
         print "\n"
       end

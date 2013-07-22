@@ -9,6 +9,12 @@ class BlingSquare
     @height_map = Array.new(@size) { Array.new(@size) }
     puts "Height map rows: #{@height_map.size}"
     puts "Height map cols: #{@height_map[0].size}"
+    
+    @height_map[0][0] = seed
+    @height_map[0][@size-1] = seed
+    @height_map[@size-1][0] = seed
+    @height_map[@size-1][@size-1] = seed
+    
     self.execute(0, 0, @size-1, @size-1, seed, 1.0)
   end
   
@@ -36,7 +42,7 @@ class BlingSquare
     @height_map[y1][centerpoint_x] = north
     puts "north: #{north}"
 
-    naive_south = self.avg([get_value(x1,y2), get_value(x2,y2), get_value(x1+x2/2, y1+y2/2), get_value(x1+x2/2, y2+(y1-y2)/2)])
+    naive_south = self.avg([get_value(x1,y2), get_value(x2,y2), get_value(x1+x2/2, y1+y2/2), get_value(x1+x2/2, y2+(y2-y1)/2)])
     south = naive_south + get_random_component(h)
     @height_map[y2][centerpoint_x] = south
     puts "south: #{south}"
@@ -59,15 +65,23 @@ class BlingSquare
   end
   
   def get_value(x,y)
+    puts "get value(#{x},#{y})..."
     # returns seed if not found
     # if goes over bounds, goes to the other end of the map (endless world)
     if x > @size-1
-      x = x - @size
+      x = x - @size + 1
+    end
+    if x < 0
+      x = @size - 1 + x
     end
     if y > @size-1
-      y = y - @size
+      y = y - @size + 1
     end
-    return @height_map[x][y] ? @height_map[x][y] : @seed
+    if y < 0
+      y = @size - 1 + y
+    end
+    puts "... effective value(#{x},#{y}) --> #{@height_map[x][y]}"
+    return @height_map[x][y]
   end
   
   def get_map
