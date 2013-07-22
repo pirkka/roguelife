@@ -10,11 +10,16 @@ module Roguelife
       @world.tiles = self.generate_tiles
       
       h = HeightMap.new @@world_width, @@world_height
-#      h.static
+      h.static
       h.set 10,10,10
       h.set 10,20,10
       h.set 15,30,10
       h.set 20,22,-10
+      h.smooth_grid
+      h.smooth_grid
+      h.smooth_grid
+      h.smooth_grid
+      h.smooth_grid
       h.smooth_grid
       h.smooth_grid
       h.smooth_grid

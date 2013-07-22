@@ -17,7 +17,7 @@ class GameWindow < Gosu::Window
   def initialize
     super UISettings::WindowWidth, UISettings::WindowHeight, false
     self.caption = "Roguelife"
-    @font = Gosu::Font.new(self, Gosu::default_font_name, 20)
+    @font = Gosu::Font.new(self, Gosu::default_font_name, 14)
   end
   
   def update
@@ -80,9 +80,9 @@ class GameWindow < Gosu::Window
   end
   
   def draw_agents
-    @font.draw("@", 203, 202, ZOrder::UI, 1.0, 1.0, 0xffffffff)
+    # @font.draw("@", 200, 200, ZOrder::UI, 1.0, 1.0, 0xffffffff)
     @game.world.agents.each do |agent|
-      @font.draw(agent.char, UISettings::TileSize*agent.x + 3, UISettings::TileSize*agent.y + 2, ZOrder::UI, 1.0, 1.0, 0xffffffff)
+      @font.draw(agent.char, UISettings::TileSize*agent.x + 1, UISettings::TileSize*agent.y + 0, ZOrder::UI, 1.0, 1.0, 0xffffffff)
     end
   end
 
