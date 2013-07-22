@@ -1,14 +1,12 @@
 module Roguelife
   class WorldGenerator 
+    
+    def self.generate_tiles_with_diamond_square
+      ds = BlingSquare.new(6)
+      return ds.get_map
+    end
 
-    @@world_width = 65
-    @@world_height = 65
-  
-    def self.generate
-      puts 'Generating world...'
-      @world = World.new
-      @world.tiles = self.generate_tiles
-      
+    def self.generate_tiles_with_height_map
       h = HeightMap.new @@world_width, @@world_height
       h.static
       h.set 10,10,10
@@ -25,13 +23,30 @@ module Roguelife
       h.smooth_grid
       h.smooth_grid
       h.smooth_grid
-      @world.tiles = h.get_grid
+      return h.get_grid
+    end
+  
+    def self.generate_tiles_with_ruby_quiz
+      return DiamondSquare.go(6)
+    end
+  
+    def self.generate
+      puts 'Generating world...'
+      @world = World.new
+      @world.tiles = self.generate_tiles_with_diamond_square
+      # @world.tiles = self.generate_tiles      
+      # @world.tiles = self.generate_tiles_with_height_map
+      # @world.tiles = self.generate_tiles_with_ruby_quiz
       
       self.generate_agents
       return @world
     end
   
     def self.generate_tiles
+      
+      @@world_width = 65
+      @@world_height = 65
+      
       tiles = []
       rc = 0 
       cc = 0

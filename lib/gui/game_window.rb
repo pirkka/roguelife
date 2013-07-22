@@ -82,7 +82,7 @@ class GameWindow < Gosu::Window
   def draw_agents
     # @font.draw("@", 200, 200, ZOrder::UI, 1.0, 1.0, 0xffffffff)
     @game.world.agents.each do |agent|
-      @font.draw(agent.char, UISettings::TileSize*agent.x + 1, UISettings::TileSize*agent.y + 0, ZOrder::UI, 1.0, 1.0, 0xffffffff)
+      @font.draw(agent.char, UISettings::TileSize*agent.x + 2, UISettings::TileSize*agent.y + 1, ZOrder::UI, 1.0, 1.0, 0xffffffff)
     end
   end
 
@@ -92,6 +92,9 @@ class GameWindow < Gosu::Window
   end
 
   def define_background_color(altitude)  
+    if !altitude
+      altitude = 0
+    end
     ColorConversion.hsl_to_gosu(110, 100, 50+altitude*4)
   end
     
