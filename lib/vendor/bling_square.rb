@@ -15,15 +15,16 @@ class BlingSquare
     @height_map[@size-1][0] = seed
     @height_map[@size-1][@size-1] = seed
     
-    self.execute(0, 0, @size-1, @size-1, seed, 1.0)
+    self.execute(0, 0, @size-1, @size-1, 1.0)
   end
   
-  def execute(x1,y1,x2,y2,seed,h)
+  def execute(x1,y1,x2,y2,h)
+    puts "EXECUTING at #{x1},#{y1} - #{x2},#{y2} - h: #{h}"
     # diamond step
-    northwest = @height_map[x1][y1] ? @height_map[x1][y1] : seed
-    northeast = @height_map[x2][y1] ? @height_map[x2][y1] : seed
-    southwest = @height_map[x1][y2] ? @height_map[x1][y2] : seed
-    southeast = @height_map[x2][y2] ? @height_map[x2][y2] : seed
+    northwest = get_value x1,y1
+    northeast = get_value x2,y1
+    southwest = get_value x1,y2
+    southeast = get_value x2,y2
     naive_centerpoint = self.avg [northwest,northeast,southwest,southeast]
     puts "---"
     puts "naive_centerpoint: #{naive_centerpoint}"
@@ -57,6 +58,11 @@ class BlingSquare
     @height_map[centerpoint_y][x2] = east
     puts "east: #{east}"
     
+    # and finally - recurse...
+
+    # first diamond steps - these need to be done before the square steps :7
+    # then square steps
+    # execute(x1,y1,(x1+x2)/2,(y1+y2)/2,h/2)
     
   end
 
