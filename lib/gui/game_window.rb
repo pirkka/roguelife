@@ -18,6 +18,12 @@ class GameWindow < Gosu::Window
     super UISettings::WindowWidth, UISettings::WindowHeight, false
     self.caption = "Roguelife"
     @font = Gosu::Font.new(self, Gosu::default_font_name, 14)
+    
+    @viewport_x = 0
+    @viewport_y = 0
+    @viewport_width = 40
+    @viewport_height = 40
+    
   end
   
   def update
@@ -56,12 +62,17 @@ class GameWindow < Gosu::Window
   # drawing
   def draw_tiles
     # puts "drawing tiles #{self.game.world.tiles.size}"
+    # TODO: OPTIMIZE THE LOOP BY CUTTING THE ARRAYS
     tile_map = @game.world.get_height_map
     x = y = 0
     tile_map.each do |row| 
-      row.each do |column|
-        draw_tile(x,y,column)
-        x += 1
+      if y >= @viewport_y && y < @viewport_y + @viewport_height
+        row.each do |column|
+          if x >= @viewport_x && x < @viewport_x + @viewport_width
+            draw_tile(x,y,column)
+          end
+          x += 1
+        end
       end
       y += 1
       x = 0
