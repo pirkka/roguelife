@@ -24,11 +24,11 @@ class BlingSquare
     #self.execute(0, 0, @size-1, @size-1, 1.0)
   end
   
-  def recurse_squares(level=1,h=1.0)
+  def recurse_squares(level=1,range=1.0,h=0.5)
 
     # let's drill down the whole map part by part
     puts "------------------------------------"
-    puts "Drilldown #{level} / #{h}"
+    puts "Drilldown #{level} range: #{range} h: #{h}"
     segment_size = (@size.to_f/(2**(level-1))).ceil
     puts "segment size is #{segment_size}"
 
@@ -47,7 +47,7 @@ class BlingSquare
       y2 = y1 + segment_size - 1
       while x1 < @size-1 do 
         x2 = x1 + segment_size - 1
-        self.execute_diamond_step(x1, y1, x2, y2, h)
+        self.execute_diamond_step(x1, y1, x2, y2, range)
         x1 = x2
       end
       y1 = y2
@@ -64,7 +64,7 @@ class BlingSquare
       y2 = y1 + segment_size - 1
       while x1 < @size-1 do 
         x2 = x1 + segment_size - 1
-        self.execute_square_step(x1, y1, x2, y2, h)
+        self.execute_square_step(x1, y1, x2, y2, range)
         x1 = x2
       end
       y1 = y2
@@ -73,7 +73,7 @@ class BlingSquare
 
 
     
-    recurse_squares(level+1, h/2)
+    recurse_squares(level+1, range*(2**-h))
   end
   
   def execute_diamond_step(x1,y1,x2,y2,h)
