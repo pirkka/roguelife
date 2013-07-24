@@ -19,7 +19,7 @@ class Game
 
   def initialize
     @messages_to_player = []
-    @paused = true
+    @paused = false
   end
   
   def time
