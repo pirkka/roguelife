@@ -72,19 +72,16 @@ class GameWindow < Gosu::Window
     end
     
     if id == Gosu::KbUp
-      if @game.world.player_with_turn
-        @game.world.insert_action(@game.world.player_with_turn.get_move_north(@game.world))
-        @game.world.player_with_turn = nil
-      end
+      @game.move_north
     end
     if id == Gosu::KbDown
-      puts "arrow up"
+      @game.move_south
     end
     if id == Gosu::KbLeft
-      puts "arrow up"
+      @game.move_west
     end
     if id == Gosu::KbRight
-      puts "arrow up"
+      @game.move_east
     end
     
     

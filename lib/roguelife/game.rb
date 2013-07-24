@@ -50,5 +50,33 @@ class Game
       puts action
     end
   end
+  
+  def move_north
+    if @world.player_with_turn
+      @world.insert_action(Roguelife::MoveNorth.new(@world.player_with_turn, @world.time))
+      @world.player_with_turn = nil
+    end 
+  end
+
+  def move_south
+    if @world.player_with_turn
+      @world.insert_action(Roguelife::MoveSouth.new(@world.player_with_turn, @world.time))
+      @world.player_with_turn = nil
+    end 
+  end
+
+  def move_west
+    if @world.player_with_turn
+      @world.insert_action(Roguelife::MoveWest.new(@world.player_with_turn, @world.time))
+      @world.player_with_turn = nil
+    end 
+  end
+
+  def move_east
+    if @world.player_with_turn
+      @world.insert_action(Roguelife::MoveEast.new(@world.player_with_turn, @world.time))
+      @world.player_with_turn = nil
+    end 
+  end
    
 end
