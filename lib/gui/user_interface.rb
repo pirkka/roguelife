@@ -7,8 +7,7 @@ module Roguelife
       @game = Game.new
       @game.world = WorldGenerator.generate
 #      self.draw_world
-      window = GameWindow.new
-      window.game = @game
+      window = GameWindow.new(@game)
       window.show
     end
   

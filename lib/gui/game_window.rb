@@ -14,16 +14,12 @@ class GameWindow < Gosu::Window
   
   attr_accessor :game
   
-  def initialize
+  def initialize(game)
     super UISettings::WindowWidth, UISettings::WindowHeight, false
     self.caption = "Roguelife"
     @font = Gosu::Font.new(self, Gosu::default_font_name, 14)
-    
-    @viewport_x = 0
-    @viewport_y = 0
-    @viewport_width = 40
-    @viewport_height = 40
-    
+    @game = game
+    @viewport = Viewport.new(0,0,40,40,@game.world.get_height_map.size,@game.world.get_height_map[0].size)
   end
   
   def update
@@ -57,31 +53,36 @@ class GameWindow < Gosu::Window
         @game.pause
       end
     end
+    if id == Gosu::KbH
+      @viewport.move_horizontal(-10)
+    end
+    if id == Gosu::KbL
+      @viewport.move_horizontal(10)
+    end
+    if id == Gosu::KbJ
+      @viewport.move_vertical(-10)
+    end
+    if id == Gosu::KbK
+      @viewport.move_vertical(10)
+    end
   end
   
   # drawing
   def draw_tiles
     # puts "drawing tiles #{self.game.world.tiles.size}"
-    # TODO: OPTIMIZE THE LOOP BY CUTTING THE ARRAYS
     tile_map = @game.world.get_height_map
-    x = y = 0
-    tile_map.each do |row| 
-      if y >= @viewport_y && y < @viewport_y + @viewport_height
-        row.each do |column|
-          if x >= @viewport_x && x < @viewport_x + @viewport_width
-            draw_tile(x,y,column)
-          end
-          x += 1
-        end
+
+    for y in @viewport.y..@viewport.end_y
+      for x in @viewport.x..@viewport.end_x
+        draw_tile(x,y,tile_map[x][y])
       end
-      y += 1
-      x = 0
     end
+
   end
   
   def draw_tile(x,y,a)
-    pixel_x = x * UISettings::TileSize
-    pixel_y = y * UISettings::TileSize
+    pixel_x = (x - @viewport.x) * UISettings::TileSize
+    pixel_y = (y - @viewport.y) * UISettings::TileSize
     c = define_background_color(a)
     draw_square(pixel_x,pixel_y,c)
     #@font.draw(a, UISettings::TileSize*x + 2, UISettings::TileSize*y + 1, ZOrder::UI, 1.0, 1.0, 0xffffffff)
@@ -117,5 +118,5 @@ class GameWindow < Gosu::Window
       ' '
     end
   end
-    
+      
 end
