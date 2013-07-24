@@ -1,11 +1,12 @@
 class World
   
-  attr_accessor :tiles, :agents, :time, :actions
+  attr_accessor :tiles, :agents, :time, :actions, :player_with_turn
   
   def initialize
     @time = 0
     @actions = []
     @agents = []
+    @player_with_turn = nil
   end
   
   def get_height_map
@@ -16,9 +17,15 @@ class World
     unless @actions.empty?
       puts ">>> RESOLVING NEXT"
       action = @actions.shift
-      action.resolve(self)
       @time = action.time # important & planned side effect: advancing the world clock
       agent = action.agent
+      action.resolve(self)
+      
+      if !agent.ai?
+        puts "PLAYER TURN"
+        @player_with_turn = agent
+        # ask for new player action
+      end
       
       # if agent is still here - should this actually happen in the action? what if agent has gone away?
       #@actions.push(agent.get_action(self))

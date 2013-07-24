@@ -2,7 +2,7 @@ module Roguelife
   class WorldGenerator 
     
     def self.generate_tiles_with_diamond_square
-      ds = BlingSquare.new(10)
+      ds = BlingSquare.new(6)
       map = ds.get_map
       map.each do |row|
         row.map! {|x| ((x+0.9)/2*100).round}
@@ -74,6 +74,7 @@ module Roguelife
       # let's just create one "egg" agent to start the proceedings. it will eventually create the player as well
       @world.insert_agent Roguelife::Egg.new(3,7)
       @world.insert_agent Roguelife::Egg.new(5,7)
+      @world.insert_agent Roguelife::Adventurer.new(10,10)
     end
   end
 end

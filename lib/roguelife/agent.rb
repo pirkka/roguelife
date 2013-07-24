@@ -16,6 +16,10 @@ module Roguelife
     def to_s
       "#{self.class} #{@name} at #{@x},#{@y} (#{self.char}) #{self.object_id}"
     end
+    
+    def ai?
+      true
+    end
         
   end
 end

@@ -1,3 +1,5 @@
+module Roguelife
+
 class Action
   
   attr_reader :agent, :time
@@ -15,4 +17,6 @@ class Action
     "#{self.time}: #{self.class} - #{self.agent}"
   end
   
+end
+
 end

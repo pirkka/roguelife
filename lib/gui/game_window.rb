@@ -23,7 +23,9 @@ class GameWindow < Gosu::Window
   end
   
   def update
-    game.update
+    unless @game.world.player_with_turn # this is a roguelike so game world freezes when player has turn
+      game.update # move the ai characters and generally advance the world state
+    end
   end
   
   def draw
@@ -42,6 +44,9 @@ class GameWindow < Gosu::Window
     end
     if id == Gosu::KbA
       if @game.paused?
+        if @game.world.player_with_turn
+          return # doing nothing because it is player turn
+        end
         @game.world.resolve_next_action
         @game.debug
       end
@@ -65,6 +70,24 @@ class GameWindow < Gosu::Window
     if id == Gosu::KbK
       @viewport.move_vertical(10)
     end
+    
+    if id == Gosu::KbUp
+      if @game.world.player_with_turn
+        @game.world.insert_action(@game.world.player_with_turn.get_move_north(@game.world))
+        @game.world.player_with_turn = nil
+      end
+    end
+    if id == Gosu::KbDown
+      puts "arrow up"
+    end
+    if id == Gosu::KbLeft
+      puts "arrow up"
+    end
+    if id == Gosu::KbRight
+      puts "arrow up"
+    end
+    
+    
   end
   
   # drawing
@@ -113,17 +136,17 @@ class GameWindow < Gosu::Window
     saturation = 100
     brightness = altitude
     hue = 130 #green
-    if altitude < 20
-      hue = 200
+    if altitude < 10
+      hue = 200 # blue
       brightness += 40
     end
     if altitude > 70
-      hue = 30
+      hue = 30 # brown
       saturation = 50
       brightness -= 30
     end
     if altitude > 90
-      brightness = 100
+      brightness = 100 #ice
       saturation = 0
     end
     
