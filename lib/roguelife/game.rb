@@ -32,9 +32,12 @@ class Game
     end
     # called by the gosu update method
     # let's decide that this resolves single simulation step at a time
+#    self.world.resolve_next_action 
     # later on it could render all simulation steps until reaching to the player sim step (game pauses until player decides)
-    
-    self.world.resolve_next_action 
+    # ...and even later on it could do something to keep the ui responsive
+    while !@world.player_with_turn
+      self.world.resolve_next_action
+    end
   end
   
   # print out various things
