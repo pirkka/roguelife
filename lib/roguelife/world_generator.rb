@@ -5,7 +5,7 @@ module Roguelife
       ds = BlingSquare.new(6)
       map = ds.get_map
       map.each do |row|
-        row.map! {|x| ((x+0.9)/2*10).round}
+        row.map! {|x| ((x+0.9)/2*100).round}
       end
       return map
     end

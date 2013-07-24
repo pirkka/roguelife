@@ -19,7 +19,7 @@ class GameWindow < Gosu::Window
     self.caption = "Roguelife"
     @font = Gosu::Font.new(self, Gosu::default_font_name, 14)
     @game = game
-    @viewport = Viewport.new(0,0,40,40,@game.world.get_height_map.size,@game.world.get_height_map[0].size)
+    @viewport = Viewport.new(0,0,60,60,@game.world.get_height_map.size,@game.world.get_height_map[0].size)
   end
   
   def update
@@ -110,15 +110,24 @@ class GameWindow < Gosu::Window
     if !altitude
       altitude = 0
     end
-    ColorConversion.hsl_to_gosu(110, 100, 30+altitude*7)
-  end
-
-  def convert_float_to_tenz(f)
-    if f
-      ((f*10+10)/2).round
-    else
-      ' '
+    saturation = 100
+    brightness = altitude
+    hue = 130 #green
+    if altitude < 20
+      hue = 200
+      brightness += 40
     end
+    if altitude > 70
+      hue = 30
+      saturation = 50
+      brightness -= 30
+    end
+    if altitude > 90
+      brightness = 100
+      saturation = 0
+    end
+    
+    ColorConversion.hsl_to_gosu(hue, saturation, brightness)
   end
       
 end

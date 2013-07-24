@@ -1,5 +1,9 @@
 # Pirkka's diamond square algorithm
 # creates a height map with values between -1 and +1
+
+# TODO: WRAPPING MODE
+# Note that two values are highlighted in black. They are actually the same value. Every time you calculate a value on the edge during the square step, make sure to also store it on the opposite side of the array. These points need to be exactly the same in order for seamless wrapping to occur.
+
 class BlingSquare
   
   def initialize(n, seed=0)
