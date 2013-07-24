@@ -24,7 +24,7 @@ class BlingSquare
     #self.execute(0, 0, @size-1, @size-1, 1.0)
   end
   
-  def recurse_squares(level=1,range=1.0,h=0.5)
+  def recurse_squares(level=1,range=1.0,h=0.5, c=2)
 
     # let's drill down the whole map part by part
     puts "------------------------------------"
@@ -73,7 +73,7 @@ class BlingSquare
 
 
     
-    recurse_squares(level+1, range*(2**-h))
+    recurse_squares(level+1, range*(c**-h))
   end
   
   def execute_diamond_step(x1,y1,x2,y2,h)
