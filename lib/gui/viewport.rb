@@ -43,5 +43,9 @@ class Viewport
     puts "viewport y is #{@y}"
   end
   
+  #utility function
+  def contains(thing)
+    thing.x > @x && thing.x <= self.end_x && thing.y > @y && thing.y <= self.end_y
+  end
   
 end

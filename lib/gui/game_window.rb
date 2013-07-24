@@ -95,7 +95,9 @@ class GameWindow < Gosu::Window
   def draw_agents
     # @font.draw("@", 200, 200, ZOrder::UI, 1.0, 1.0, 0xffffffff)
     @game.world.agents.each do |agent|
-      @font.draw(agent.char, UISettings::TileSize*agent.x + 2, UISettings::TileSize*agent.y + 1, ZOrder::UI, 1.0, 1.0, 0xffffffff)
+      if @viewport.contains(agent)
+        @font.draw(agent.char, UISettings::TileSize*(agent.x - @viewport.x) + 2, UISettings::TileSize*(agent.y - @viewport.y) + 1, ZOrder::UI, 1.0, 1.0, 0xffffffff)
+      end
     end
   end
 
