@@ -7,6 +7,8 @@
 class BlingSquare
   
   def initialize(n, seed=0, range=2.0, h=1.0, c=2)
+    @min = 0
+    @max = 0
     @seed = 0
     @size = 2**n + 1
     puts "BlingSquare size #{@size}"
@@ -21,6 +23,7 @@ class BlingSquare
     
     self.recurse_squares(1, range, h, c)
     
+    
   end
   
   def recurse_squares(level=1, range, h, c)
@@ -32,7 +35,7 @@ class BlingSquare
     puts "segment size is #{segment_size}"
 
     if segment_size < 3
-      puts "end recurse"
+      puts "height map generated - min: #{@min} max: #{@max} "
       return
     end
 
@@ -93,6 +96,13 @@ class BlingSquare
   def set(x,y,v)
     # puts "setting (#{x},#{y}) --> #{v}"
     @height_map[y][x] = v
+    
+    if v > @max
+      @max = v
+    end
+    if v < @min
+      @min = v
+    end
   end
   
   def execute_square_step(x1,y1,x2,y2,range)

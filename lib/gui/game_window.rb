@@ -1,7 +1,7 @@
 require 'gosu'
 
 module UISettings
-  TileSize = 18
+  TileSize = 10
   WindowWidth = 910
   WindowHeight = 910
 end
@@ -17,9 +17,9 @@ class GameWindow < Gosu::Window
   def initialize(game)
     super UISettings::WindowWidth, UISettings::WindowHeight, false
     self.caption = "Roguelife"
-    @font = Gosu::Font.new(self, Gosu::default_font_name, 14)
+    @font = Gosu::Font.new(self, Gosu::default_font_name, UISettings::TileSize-2)
     @game = game
-    @viewport = Viewport.new(10,10,50,50,@game.world.get_height_map.size,@game.world.get_height_map[0].size)
+    @viewport = Viewport.new(0,0,UISettings::WindowWidth/UISettings::TileSize,UISettings::WindowHeight/UISettings::TileSize,@game.world.get_height_map.size,@game.world.get_height_map[0].size)
   end
   
   def update
@@ -32,6 +32,10 @@ class GameWindow < Gosu::Window
     draw_tiles
     draw_agents
     draw_time
+  end
+  
+  def scroll_amount
+    UISettings::WindowWidth/UISettings::TileSize/2
   end
   
   def button_down(id)
@@ -59,16 +63,16 @@ class GameWindow < Gosu::Window
       end
     end
     if id == Gosu::KbH
-      @viewport.move_horizontal(-10)
+      @viewport.move_horizontal(-self.scroll_amount)
     end
     if id == Gosu::KbL
-      @viewport.move_horizontal(10)
+      @viewport.move_horizontal(self.scroll_amount)
     end
     if id == Gosu::KbJ
-      @viewport.move_vertical(-10)
+      @viewport.move_vertical(-self.scroll_amount)
     end
     if id == Gosu::KbK
-      @viewport.move_vertical(10)
+      @viewport.move_vertical(self.scroll_amount)
     end
     
     if id == Gosu::KbUp
