@@ -20,6 +20,10 @@ module Roguelife
     def ai?
       true
     end
+    
+    def position
+      [self.x, self.y]
+    end
         
   end
 end

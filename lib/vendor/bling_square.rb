@@ -6,7 +6,7 @@
 
 class BlingSquare
   
-  def initialize(n, seed=0)
+  def initialize(n, seed=0, range=2.0, h=1.0, c=2)
     @seed = 0
     @size = 2**n + 1
     puts "BlingSquare size #{@size}"
@@ -19,16 +19,15 @@ class BlingSquare
     @height_map[@size-1][0] = seed
     @height_map[@size-1][@size-1] = seed
     
-    self.recurse_squares
+    self.recurse_squares(1, range, h, c)
     
-    #self.execute(0, 0, @size-1, @size-1, 1.0)
   end
   
-  def recurse_squares(level=1,range=1.0,h=0.5, c=2)
+  def recurse_squares(level=1, range, h, c)
 
     # let's drill down the whole map part by part
     puts "------------------------------------"
-    puts "Drilldown #{level} range: #{range} h: #{h}"
+    puts "Drilldown #{level} range: -#{range/2} to #{range/2} h: #{h}"
     segment_size = (@size.to_f/(2**(level-1))).ceil
     puts "segment size is #{segment_size}"
 
@@ -73,10 +72,10 @@ class BlingSquare
 
 
     
-    recurse_squares(level+1, range*(c**-h))
+    recurse_squares(level+1, range*(c**-h), h, c)
   end
   
-  def execute_diamond_step(x1,y1,x2,y2,h)
+  def execute_diamond_step(x1,y1,x2,y2,range)
     # puts "Diamond Step at #{x1},#{y1} - #{x2},#{y2} - h: #{h}"
     # diamond step
     northwest = get_value x1,y1
@@ -84,7 +83,7 @@ class BlingSquare
     southwest = get_value x1,y2
     southeast = get_value x2,y2
     naive_centerpoint = self.avg [northwest,northeast,southwest,southeast]
-    random_component = rand() * h * 2 - h
+    random_component = rand() * range - range / 2
     centerpoint = naive_centerpoint + random_component
     centerpoint_x = (x1+x2)/2
     centerpoint_y = (y1+y2)/2
@@ -96,8 +95,8 @@ class BlingSquare
     @height_map[y][x] = v
   end
   
-  def execute_square_step(x1,y1,x2,y2,h)
-    # puts "Square Step at #{x1},#{y1} - #{x2},#{y2} - h: #{h}"
+  def execute_square_step(x1,y1,x2,y2,range)
+    # puts "Square Step at #{x1},#{y1} - #{x2},#{y2} - range: #{range}"
     # square step
     centerpoint_x = (x1+x2)/2
     centerpoint_y = (y1+y2)/2
@@ -105,28 +104,30 @@ class BlingSquare
     # first north
     #puts 'north'
     naive_north = self.avg([get_value(x1,y1), get_value(x2,y1), get_value((x1+x2)/2, (y1+y2)/2), get_value((x1+x2)/2, y1-((y2-y1)/2))])
-    north = naive_north + get_random_component(h)
+    north = naive_north + get_random_component(range)
     set(centerpoint_x,y1,north)
 
     #puts 'south'
     naive_south = self.avg([get_value(x1,y2), get_value(x2,y2), get_value((x1+x2)/2, (y1+y2)/2), get_value((x1+x2)/2, y2+(y2-y1)/2)])
-    south = naive_south + get_random_component(h)
+    south = naive_south + get_random_component(range)
     set(centerpoint_x,y2,south)
 
     #puts 'west'
     naive_west = self.avg([get_value(x1,y1), get_value(x1,y2), get_value((x1+x2)/2, (y1+y2)/2), get_value(x1-(x2-x1)/2, (y1+y2)/2)])
-    west = naive_west + get_random_component(h)
+    west = naive_west + get_random_component(range)
     set(x1,centerpoint_y,west)
 
     #puts 'east'
     naive_east = self.avg([get_value(x2,y1), get_value(x2,y2), get_value((x1+x2)/2, (y1+y2)/2), get_value(x2+(x2-x1)/2, (y1+y2)/2)])
-    east = naive_east + get_random_component(h)
+    east = naive_east + get_random_component(range)
     set(x2,centerpoint_y, east)
         
   end
 
-  def get_random_component(h)
-    rand() * h * 2 - h
+  def get_random_component(range)
+    x = rand() * range - range/2
+    # puts "random component: #{x}"
+    return x
   end
   
   def get_value(x,y)

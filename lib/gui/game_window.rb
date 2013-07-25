@@ -1,7 +1,7 @@
 require 'gosu'
 
 module UISettings
-  TileSize = 14
+  TileSize = 18
   WindowWidth = 910
   WindowHeight = 910
 end
@@ -19,7 +19,7 @@ class GameWindow < Gosu::Window
     self.caption = "Roguelife"
     @font = Gosu::Font.new(self, Gosu::default_font_name, 14)
     @game = game
-    @viewport = Viewport.new(0,0,60,60,@game.world.get_height_map.size,@game.world.get_height_map[0].size)
+    @viewport = Viewport.new(10,10,50,50,@game.world.get_height_map.size,@game.world.get_height_map[0].size)
   end
   
   def update
@@ -94,7 +94,7 @@ class GameWindow < Gosu::Window
 
     for y in @viewport.y..@viewport.end_y
       for x in @viewport.x..@viewport.end_x
-        draw_tile(x,y,tile_map[x][y])
+        draw_tile(x,y,tile_map[y][x])
       end
     end
 
@@ -105,11 +105,26 @@ class GameWindow < Gosu::Window
     pixel_y = (y - @viewport.y) * UISettings::TileSize
     c = define_background_color(a)
     draw_square(pixel_x,pixel_y,c)
-    #@font.draw(a, UISettings::TileSize*x + 2, UISettings::TileSize*y + 1, ZOrder::UI, 1.0, 1.0, 0xffffffff)
+    # @font.draw(a, UISettings::TileSize*x + 2, UISettings::TileSize*y + 1, ZOrder::UI, 1.0, 1.0, 0xffffffff)
   end
   
   def draw_square(x,y,c)
     draw_quad(x, y, c, x, y+UISettings::TileSize, c, x+UISettings::TileSize, y+UISettings::TileSize, c, x+UISettings::TileSize, y, c, 0)    
+  end
+
+  def draw_gradient_tile(x,y,a1,a2,a3,a4)
+    pixel_x = (x - @viewport.x) * UISettings::TileSize + UISettings::TileSize/2
+    pixel_y = (y - @viewport.y) * UISettings::TileSize + UISettings::TileSize/2
+    c1 = define_background_color(a1)
+    c2 = define_background_color(a2)
+    c3 = define_background_color(a3)
+    c4 = define_background_color(a4)
+    draw_gradient_square(pixel_x,pixel_y,c1,c2,c3,c4)
+    # @font.draw(a, UISettings::TileSize*x + 2, UISettings::TileSize*y + 1, ZOrder::UI, 1.0, 1.0, 0xffffffff)
+  end
+  
+  def draw_gradient_square(x,y,c1,c2,c3,c4)
+    draw_quad(x, y, c1, x, y+UISettings::TileSize, c2, x+UISettings::TileSize, y, c3, x+UISettings::TileSize, y+UISettings::TileSize, c4, 0)    
   end
   
   def draw_agents
@@ -124,6 +139,7 @@ class GameWindow < Gosu::Window
   def draw_time
     @font.draw("Time: #{@game.world.time}", 10, 860, ZOrder::UI, 1.0, 1.0, 0xffffffff)
     @font.draw("Actions scheduled: #{@game.world.actions.size}", 10, 880, ZOrder::UI, 1.0, 1.0, 0xffffffff)
+    @font.draw("Altitude: #{@game.player_altitude}", 10, 840, ZOrder::UI, 1.0, 1.0, 0xffffffff)
   end
 
   def define_background_color(altitude)  

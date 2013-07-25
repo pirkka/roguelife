@@ -6,7 +6,7 @@ module Roguelife
     def start
       @game = Game.new
       @game.world = WorldGenerator.generate
-#      self.draw_world
+      # self.draw_world # debug for world generation
       window = GameWindow.new(@game)
       window.show
     end
@@ -21,7 +21,7 @@ module Roguelife
           if !column
             column = 0
           end
-          print Paint[column, "#0c0", define_background_color(column)]
+          print Paint[".#{column}", "#0c0", define_background_color(column)]
         end
         print "\n"
       end

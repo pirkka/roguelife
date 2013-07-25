@@ -81,5 +81,13 @@ class Game
       @world.player_with_turn = nil
     end 
   end
-   
+  
+  def player_altitude
+    player = @world.agents.select {|x| x.class == Roguelife::Adventurer}.first
+    if player
+      return @world.get_height_map[player.y][player.x]
+    else
+      return 0
+    end
+  end
 end

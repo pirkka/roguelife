@@ -34,8 +34,8 @@ module Roguelife
 
   class MoveNorth < Roguelife::Action
     def resolve(world)
-      puts "#{agent} moves north"
       self.agent.y -= 1
+      puts "#{agent} moves north to #{self.agent.position}"
     end
   end
 

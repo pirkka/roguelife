@@ -9,14 +9,23 @@ class Viewport
     @height = height
     @world_width = world_width
     @world_height = world_height
+    
+    # sanity check for small worlds
+    if @width > @world_width
+      @width = @world_width
+    end
+    if @height > @world_height
+      @height = @world_height
+    end
+    
   end
   
   def end_x
-    @x + @width
+    @x + @width - 1
   end
   
   def end_y
-    @y + @height
+    @y + @height - 1
   end
   
   def move_horizontal(new_x)
@@ -45,7 +54,7 @@ class Viewport
   
   #utility function
   def contains(thing)
-    thing.x > @x && thing.x <= self.end_x && thing.y > @y && thing.y <= self.end_y
+    thing.x >= @x && thing.x <= self.end_x && thing.y >= @y && thing.y <= self.end_y
   end
   
 end
