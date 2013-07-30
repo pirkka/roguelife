@@ -29,10 +29,9 @@ class BlingSquare
   def recurse_squares(level=1, range, h, c)
 
     # let's drill down the whole map part by part
-    puts "------------------------------------"
-    puts "Drilldown #{level} range: -#{range/2} to #{range/2} h: #{h}"
     segment_size = (@size.to_f/(2**(level-1))).ceil
-    puts "segment size is #{segment_size}"
+    
+    puts "Drilldown #{level} range: -#{range/2} to #{range/2} h: #{h} segment size: #{segment_size}"
 
     if segment_size < 3
       puts "height map generated - min: #{@min} max: #{@max} "

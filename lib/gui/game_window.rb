@@ -1,7 +1,7 @@
 require 'gosu'
 
 module UISettings
-  TileSize = 10
+  TileSize = 32
   WindowWidth = 910
   WindowHeight = 910
 end
@@ -29,6 +29,7 @@ class GameWindow < Gosu::Window
   end
   
   def draw
+    update_viewport
     draw_tiles
     draw_agents
     draw_time
@@ -89,6 +90,13 @@ class GameWindow < Gosu::Window
     end
     
     
+  end
+  
+  # viewport
+  def update_viewport
+    if @game.player
+      @viewport.update_for_player_at(@game.player.x, @game.player.y)
+    end
   end
   
   # drawing
