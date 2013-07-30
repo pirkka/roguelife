@@ -17,6 +17,9 @@ class Viewport
     if @height > @world_height
       @height = @world_height
     end
+
+    @max_x = @world_width - 1 - @width
+    @max_y = @world_height - 1 - @width
     
   end
   
@@ -30,9 +33,8 @@ class Viewport
   
   def move_horizontal(amount_x)
     @x += amount_x
-    @x_max = @world_width - 1 - @width
-    if @x > @x_max
-      @x = @x_max
+    if @x > @max_x
+      @x = @max_x
     end
     if @x < 0
       @x = 0
@@ -42,9 +44,8 @@ class Viewport
 
   def move_vertical(amount_y)
     @y += amount_y
-    @y_may = @world_height - 1 - @width
-    if @y > @y_may
-      @y = @y_may
+    if @y > @max_y
+      @y = @max_y
     end
     if @y < 0
       @y = 0
@@ -63,22 +64,23 @@ class Viewport
   end
   
   def update_for_player_at(x,y)
-    if x + min_distance_to_border > self.end_x
+    puts "x: x min_distance_to_border: #{min_distance_to_border} end_x: #{self.end_x} @max_x: #{@max_x}"
+    if x + min_distance_to_border > self.end_x && x < @max_x
       puts 'skroll to increment x'
       # self.move_horizontal(min_distance_to_border)
       self.move_horizontal(1)
     end
-    if x - min_distance_to_border < @x
+    if x - min_distance_to_border < @x && @x > 0
       puts 'skroll to decrement'
       # self.move_horizontal(- min_distance_to_border)
       self.move_horizontal(-1)
     end
-    if y + min_distance_to_border > self.end_y
+    if y + min_distance_to_border > self.end_y && y < @max_y
       puts 'skroll to increment y'
       # self.move_vertical(min_distance_to_border)
       self.move_vertical(1)
     end
-    if y - min_distance_to_border < @y
+    if y - min_distance_to_border < @y && @y > 0
       puts 'skroll to decrement'
       # self.move_vertical(- min_distance_to_border)
       self.move_vertical(-1)

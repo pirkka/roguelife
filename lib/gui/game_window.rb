@@ -1,7 +1,7 @@
 require 'gosu'
 
 module UISettings
-  TileSize = 32
+  TileSize = 22
   WindowWidth = 910
   WindowHeight = 910
 end
