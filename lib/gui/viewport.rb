@@ -64,7 +64,7 @@ class Viewport
   end
   
   def update_for_player_at(x,y)
-    puts "x: x min_distance_to_border: #{min_distance_to_border} end_x: #{self.end_x} @max_x: #{@max_x}"
+    # puts "x: #{x} min_distance_to_border: #{min_distance_to_border} end_x: #{self.end_x} @max_x: #{@max_x}"
     if x + min_distance_to_border > self.end_x && x < @max_x
       puts 'skroll to increment x'
       # self.move_horizontal(min_distance_to_border)

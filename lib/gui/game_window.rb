@@ -1,9 +1,10 @@
 require 'gosu'
 
 module UISettings
-  TileSize = 22
+  TileSize = 32
   WindowWidth = 910
   WindowHeight = 910
+  TileMode = :fuzzed
 end
 
 module ZOrder
@@ -106,10 +107,25 @@ class GameWindow < Gosu::Window
 
     for y in @viewport.y..@viewport.end_y
       for x in @viewport.x..@viewport.end_x
-        draw_tile(x,y,tile_map[y][x])
+        # draw_tile(x,y,tile_map[y][x])
       end
     end
+    
+    case UISettings::TileMode
+    when :fuzzed
+      puts "fuzzing tiles"
+      for y in @viewport.y..@viewport.end_y
+        for x in @viewport.x..@viewport.end_x
+          draw_fuzzed_tile(x,y,tile_map[y][x])
+        end
+      end
+    when :square
+      # do nothing
+    end
 
+    # test
+    # c = define_background_color(90)
+    # draw_quad(90, 100, c, 100, 200, c, 200, 134, c, 203, 150, c, 0)    
   end
   
   def draw_tile(x,y,a)
@@ -119,9 +135,50 @@ class GameWindow < Gosu::Window
     draw_square(pixel_x,pixel_y,c)
     # @font.draw(a, UISettings::TileSize*x + 2, UISettings::TileSize*y + 1, ZOrder::UI, 1.0, 1.0, 0xffffffff)
   end
+
+  def draw_fuzzed_tile(x,y,a)
+    fuzz_randomizer = Random.new(x+y) # i feel more comfy seeding the randomizer with the map x,y instead of pixel x,y
+    pixel_x = (x - @viewport.x) * UISettings::TileSize
+    pixel_y = (y - @viewport.y) * UISettings::TileSize
+    c = define_background_color(a)
+
+    x1 = pixel_x
+    y1 = pixel_y
+    x2 = pixel_x
+    y2 = pixel_y + UISettings::TileSize
+    x3 = pixel_x + UISettings::TileSize
+    y3 = pixel_y + UISettings::TileSize
+    x4 = pixel_x + UISettings::TileSize
+    y4 = pixel_y
+    x1 = x1 - fuzz_amount(fuzz_randomizer.rand)
+    x2 = x2 - fuzz_amount(fuzz_randomizer.rand)
+    x3 = x3 + fuzz_amount(fuzz_randomizer.rand)
+    x4 = x4 + fuzz_amount(fuzz_randomizer.rand)
+    y1 = y1 - fuzz_amount(fuzz_randomizer.rand)
+    y2 = y2 + fuzz_amount(fuzz_randomizer.rand)
+    y3 = y3 + fuzz_amount(fuzz_randomizer.rand)
+    y4 = y4 - fuzz_amount(fuzz_randomizer.rand)
+    puts "#{x1},#{y1} #{x2},#{y2} #{x3},#{y3} #{x4},#{y4}"
+    draw_quad(x1, y1, c, x2, y2, c, x3, y3, c, x4, y4, c, 0)    
+
+  end
+  
+  def fuzz_amount(rando)
+    (UISettings::TileSize * rando * 0.1).round
+  end
   
   def draw_square(x,y,c)
     draw_quad(x, y, c, x, y+UISettings::TileSize, c, x+UISettings::TileSize, y+UISettings::TileSize, c, x+UISettings::TileSize, y, c, 0)    
+  end
+
+
+  
+  # create semirandom fuzz for less square squares
+  def fuzz(value, x, y)
+    amount = (x+y) % 19
+    retval = value + amount - (amount/2)
+    puts "fuzz #{value} -> #{retval}"
+    return retval
   end
 
   def draw_gradient_tile(x,y,a1,a2,a3,a4)
