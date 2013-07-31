@@ -5,6 +5,7 @@ module UISettings
   WindowWidth = 910
   WindowHeight = 910
   TileMode = :fuzzed
+  TileGradient = 5
 end
 
 module ZOrder
@@ -113,7 +114,7 @@ class GameWindow < Gosu::Window
     
     case UISettings::TileMode
     when :fuzzed
-      puts "fuzzing tiles"
+      # puts "fuzzing tiles"
       for y in @viewport.y..@viewport.end_y
         for x in @viewport.x..@viewport.end_x
           draw_fuzzed_tile(x,y,tile_map[y][x])
@@ -140,7 +141,10 @@ class GameWindow < Gosu::Window
     fuzz_randomizer = Random.new(x+y) # i feel more comfy seeding the randomizer with the map x,y instead of pixel x,y
     pixel_x = (x - @viewport.x) * UISettings::TileSize
     pixel_y = (y - @viewport.y) * UISettings::TileSize
+
     c = define_background_color(a)
+    c_bright = define_background_color(a,UISettings::TileGradient)
+    c_dim = define_background_color(a,-UISettings::TileGradient)
 
     x1 = pixel_x
     y1 = pixel_y
@@ -150,6 +154,7 @@ class GameWindow < Gosu::Window
     y3 = pixel_y + UISettings::TileSize
     x4 = pixel_x + UISettings::TileSize
     y4 = pixel_y
+    
     x1 = x1 - fuzz_amount(fuzz_randomizer.rand)
     x2 = x2 - fuzz_amount(fuzz_randomizer.rand)
     x3 = x3 + fuzz_amount(fuzz_randomizer.rand)
@@ -158,8 +163,10 @@ class GameWindow < Gosu::Window
     y2 = y2 + fuzz_amount(fuzz_randomizer.rand)
     y3 = y3 + fuzz_amount(fuzz_randomizer.rand)
     y4 = y4 - fuzz_amount(fuzz_randomizer.rand)
-    puts "#{x1},#{y1} #{x2},#{y2} #{x3},#{y3} #{x4},#{y4}"
-    draw_quad(x1, y1, c, x2, y2, c, x3, y3, c, x4, y4, c, 0)    
+    
+    #puts "#{x1},#{y1} #{x2},#{y2} #{x3},#{y3} #{x4},#{y4}"
+    
+    draw_quad(x1, y1, c_bright, x2, y2, c, x3, y3, c_dim, x4, y4, c, 0)    
 
   end
   
@@ -200,6 +207,9 @@ class GameWindow < Gosu::Window
     # @font.draw("@", 200, 200, ZOrder::UI, 1.0, 1.0, 0xffffffff)
     @game.world.agents.each do |agent|
       if @viewport.contains(agent)
+        # shadow
+        @font.draw(agent.char, UISettings::TileSize*(agent.x - @viewport.x) + 4, UISettings::TileSize*(agent.y - @viewport.y) + 3, ZOrder::UI, 1.0, 1.0, 0xff765613)
+        # foreground
         @font.draw(agent.char, UISettings::TileSize*(agent.x - @viewport.x) + 2, UISettings::TileSize*(agent.y - @viewport.y) + 1, ZOrder::UI, 1.0, 1.0, 0xffffffff)
       end
     end
@@ -211,7 +221,7 @@ class GameWindow < Gosu::Window
     @font.draw("Altitude: #{@game.player_altitude}", 10, 840, ZOrder::UI, 1.0, 1.0, 0xffffffff)
   end
 
-  def define_background_color(altitude)  
+  def define_background_color(altitude, brightness_modifier=0)  
     if !altitude
       altitude = 0
     end
@@ -231,6 +241,11 @@ class GameWindow < Gosu::Window
       brightness = 100 #ice
       saturation = 0
     end
+    
+    brightness += brightness_modifier
+    brightness = 100 if brightness > 100
+    brightness = 0 if brightness < 0
+    
     
     ColorConversion.hsl_to_gosu(hue, saturation, brightness)
   end

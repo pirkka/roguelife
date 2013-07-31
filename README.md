@@ -14,3 +14,6 @@ draw_line(x1, y1, c1, x2, y2, c2, z=0, mode=:default)
 
 ### PSEUDORANDOM NUMBERS
 - http://www.ruby-doc.org/core-1.9.3/Random.html
+
+### OpenGL integration
+- https://github.com/jlnr/gosu/blob/master/examples/OpenGLIntegration.rb
