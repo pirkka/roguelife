@@ -57,6 +57,8 @@ class UITile
     # gradient colors
     @c_bright = background_color(UISettings::TileGradient)
     @c_dim = background_color(-UISettings::TileGradient)
+
+    @c_shadow = background_color(-UISettings::TileGradient*2)
     
   end
 
@@ -67,7 +69,14 @@ class UITile
   def draw_square_tile
     @@game_window.draw_quad(@p1.x, @p1.y, @c_bright, @p2.x, @p2.y, @c, @p3.x, @p3.y, @c_dim, @p4.x, @p4.y, @c, 0)    
   end
- 
+
+  def draw_fuzzed_tile
+    @@game_window.draw_quad(@f1.x, @f1.y, @c_bright, @f2.x, @f2.y, @c, @f3.x, @f3.y, @c_dim, @f4.x, @f4.y, @c, 0)    
+  end 
+
+  def draw_fuzzed_shadow
+    @@game_window.draw_quad(@fs1.x, @fs1.y, @c_shadow, @fs2.x, @fs2.y, @c_shadow, @fs3.x, @fs3.y, @c_shadow, @fs4.x, @fs4.y, @c_shadow, 0)    
+  end 
   
   def to_s
     "UITile at (#{@x},#{@y}) with altitude #{@altitude}"

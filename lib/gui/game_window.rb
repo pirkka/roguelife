@@ -109,7 +109,8 @@ class GameWindow < Gosu::Window
     ui_tile_set = UITile.create_set(self, tile_map, @viewport.x, @viewport.y, @viewport.end_x, @viewport.end_y)
 
     for ui_tile in ui_tile_set
-      ui_tile.draw_square_tile
+      ui_tile.draw_fuzzed_shadow
+      ui_tile.draw_fuzzed_tile
     end
     
     case UISettings::TileMode
