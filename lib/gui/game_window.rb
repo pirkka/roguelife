@@ -106,10 +106,10 @@ class GameWindow < Gosu::Window
     # puts "drawing tiles #{self.game.world.tiles.size}"
     tile_map = @game.world.get_height_map
 
-    for y in @viewport.y..@viewport.end_y
-      for x in @viewport.x..@viewport.end_x
-        # draw_tile(x,y,tile_map[y][x])
-      end
+    ui_tile_set = UITile.create_set(self, tile_map, @viewport.x, @viewport.y, @viewport.end_x, @viewport.end_y)
+
+    for ui_tile in ui_tile_set
+      ui_tile.draw_square_tile
     end
     
     case UISettings::TileMode
@@ -117,7 +117,7 @@ class GameWindow < Gosu::Window
       # puts "fuzzing tiles"
       for y in @viewport.y..@viewport.end_y
         for x in @viewport.x..@viewport.end_x
-          draw_fuzzed_tile(x,y,tile_map[y][x])
+          # draw_fuzzed_tile(x,y,tile_map[y][x])
         end
       end
     when :square
@@ -208,9 +208,9 @@ class GameWindow < Gosu::Window
     @game.world.agents.each do |agent|
       if @viewport.contains(agent)
         # shadow
-        @font.draw(agent.char, UISettings::TileSize*(agent.x - @viewport.x) + 4, UISettings::TileSize*(agent.y - @viewport.y) + 3, ZOrder::UI, 1.0, 1.0, 0xff765613)
+        @font.draw(agent.char, UISettings::TileSize*(agent.x - @viewport.x) + 3, UISettings::TileSize*(agent.y - @viewport.y) + 2, ZOrder::UI, 1.0, 1.0, 0xff765613)
         # foreground
-        @font.draw(agent.char, UISettings::TileSize*(agent.x - @viewport.x) + 2, UISettings::TileSize*(agent.y - @viewport.y) + 1, ZOrder::UI, 1.0, 1.0, 0xffffffff)
+        @font.draw(agent.char, UISettings::TileSize*(agent.x - @viewport.x) + 1, UISettings::TileSize*(agent.y - @viewport.y) + 0, ZOrder::UI, 1.0, 1.0, 0xffffffff)
       end
     end
   end
