@@ -17,16 +17,17 @@ class UITile
 
   attr_reader :x, :y, :altitude, :p1, :p2, :p3, :p4, :f1, :f2, :f3, :f4, :fs1, :fs2, :fs3, :fs4
 
-  def initialize(x, y, altitude, viewport_x, viewport_y, viewport_end_x, viewport_end_y)
+  def initialize(x, y, altitude, viewport_x, viewport_y, viewport_end_x, viewport_end_y, alt_delta_n, alt_delta_s, alt_delta_w, alt_delta_e)
     @x = x
     @y = y
     @altitude = altitude
-    
+    @alt_delta_n, @alt_delta_s, @alt_delta_w, @alt_delta_e = alt_delta_n, alt_delta_s, alt_delta_w, alt_delta_e
+
+    # puts "n: #{@alt_delta_n}"
     # square tile corners
     
     pixel_x = (x - viewport_x) * UISettings::TileSize
     pixel_y = (y - viewport_y) * UISettings::TileSize
-    
     
     @p1 = Point.new(pixel_x, pixel_y) 
     @p2 = Point.new(pixel_x, pixel_y+UISettings::TileSize)
@@ -123,11 +124,22 @@ class UITile
   def self.create_set(game_window, height_map, viewport_x, viewport_y, viewport_end_x, viewport_end_y)
     
     @@game_window = game_window
+
+    min_alt = 0    # TODO: move to a higher scope, usable in world generation / engine
+    max_alt = 100
     
     arr = []
     for y in viewport_y..viewport_end_y
       for x in viewport_x..viewport_end_x
-        arr << UITile.new(x,y,height_map[y][x], viewport_x, viewport_y, viewport_end_x, viewport_end_y)
+        alt_delta_n = -height_map[y][x]    # initial value for edges
+        alt_delta_s = -height_map[y][x]    # initial value for edges
+        alt_delta_w = -height_map[y][x]    # initial value for edges
+        alt_delta_e = -height_map[y][x]    # initial value for edges
+        alt_delta_n = height_map[y-1][x] if y > 0
+        alt_delta_s = height_map[y+1][x] if y < height_map.size-1
+        alt_delta_w = height_map[y][x-1] if x > 0
+        alt_delta_e = height_map[y][x+1] if x < height_map.first.size-1
+        arr << UITile.new(x,y,height_map[y][x], viewport_x, viewport_y, viewport_end_x, viewport_end_y, alt_delta_n, alt_delta_s, alt_delta_w, alt_delta_e)
       end
     end
     
