@@ -21,9 +21,8 @@ class UITile
     @x = x
     @y = y
     @altitude = altitude
-    @alt_delta_n, @alt_delta_s, @alt_delta_w, @alt_delta_e = alt_delta_n, alt_delta_s, alt_delta_w, alt_delta_e
+    @alt_delta_n, @alt_delta_s, @alt_delta_w, @alt_delta_e = alt_delta_n, alt_delta_s, alt_delta_w, alt_delta_e # deltas are stored as a value between -1 and +1
 
-    # puts "n: #{@alt_delta_n}"
     # square tile corners
     
     pixel_x = (x - viewport_x) * UISettings::TileSize
@@ -45,12 +44,12 @@ class UITile
     @f3 = Point.new(@p3.x + fuzz_amount(fuzz_randomizer.rand), @p3.y + fuzz_amount(fuzz_randomizer.rand))
     @f4 = Point.new(@p4.x + fuzz_amount(fuzz_randomizer.rand), @p4.y - fuzz_amount(fuzz_randomizer.rand))    
 
-    # fuzzed tile corners - TODO: make size independent of fuzz amount
+    # shadowed tile corners - TODO: make size independent of fuzz amount
     fuzz_randomizer = Random.new(x+y) # i feel more comfy seeding the randomizer with the map x,y instead of pixel x,y
-    @fs1 = Point.new(@p1.x - fuzz_amount(fuzz_randomizer.rand * 2), @p1.y - fuzz_amount(fuzz_randomizer.rand) * 2)
-    @fs2 = Point.new(@p2.x - fuzz_amount(fuzz_randomizer.rand * 2), @p2.y + fuzz_amount(fuzz_randomizer.rand) * 2)
-    @fs3 = Point.new(@p3.x + fuzz_amount(fuzz_randomizer.rand * 2), @p3.y + fuzz_amount(fuzz_randomizer.rand) * 2)
-    @fs4 = Point.new(@p4.x + fuzz_amount(fuzz_randomizer.rand * 2), @p4.y - fuzz_amount(fuzz_randomizer.rand) * 2)    
+    @fs1 = Point.new(@f1.x - shadow_amount(fuzz_randomizer.rand * (@alt_delta_w)), @f1.y - shadow_amount(fuzz_randomizer.rand) * (@alt_delta_n))
+    @fs2 = Point.new(@f2.x - shadow_amount(fuzz_randomizer.rand * (@alt_delta_w)), @f2.y + shadow_amount(fuzz_randomizer.rand) * (@alt_delta_s))
+    @fs3 = Point.new(@f3.x + shadow_amount(fuzz_randomizer.rand * (@alt_delta_e)), @f3.y + shadow_amount(fuzz_randomizer.rand) * (@alt_delta_s))
+    @fs4 = Point.new(@f4.x + shadow_amount(fuzz_randomizer.rand * (@alt_delta_e)), @f4.y - shadow_amount(fuzz_randomizer.rand) * (@alt_delta_n))    
 
     # base color
     @c = background_color
@@ -64,7 +63,11 @@ class UITile
   end
 
   def fuzz_amount(rando)
-    (UISettings::TileSize * rando * 0.1).round
+    (UISettings::TileSize * rando * UISettings::TileFuzz).round
+  end
+
+  def shadow_amount(rando)
+    (UISettings::TileSize * rando * UISettings::TileShadow).round
   end
  
   def draw_square_tile
@@ -127,18 +130,19 @@ class UITile
 
     min_alt = 0    # TODO: move to a higher scope, usable in world generation / engine
     max_alt = 100
+    range = min_alt-max_alt
     
     arr = []
     for y in viewport_y..viewport_end_y
       for x in viewport_x..viewport_end_x
-        alt_delta_n = -height_map[y][x]    # initial value for edges
-        alt_delta_s = -height_map[y][x]    # initial value for edges
-        alt_delta_w = -height_map[y][x]    # initial value for edges
-        alt_delta_e = -height_map[y][x]    # initial value for edges
-        alt_delta_n = height_map[y-1][x] if y > 0
-        alt_delta_s = height_map[y+1][x] if y < height_map.size-1
-        alt_delta_w = height_map[y][x-1] if x > 0
-        alt_delta_e = height_map[y][x+1] if x < height_map.first.size-1
+        alt_delta_n = 1.0 * -height_map[y][x] / range    # initial value for edges
+        alt_delta_s = 1.0 * -height_map[y][x] / range    # initial value for edges
+        alt_delta_w = 1.0 * -height_map[y][x] / range    # initial value for edges
+        alt_delta_e = 1.0 * -height_map[y][x] / range    # initial value for edges
+        alt_delta_n = 1.0 * (height_map[y-1][x]-height_map[y][x]) / range if y > 0
+        alt_delta_s = 1.0 * (height_map[y+1][x]-height_map[y][x]) / range if y < height_map.size-1
+        alt_delta_w = 1.0 * (height_map[y][x-1]-height_map[y][x]) / range if x > 0
+        alt_delta_e = 1.0 * (height_map[y][x+1]-height_map[y][x]) / range if x < height_map.first.size-1
         arr << UITile.new(x,y,height_map[y][x], viewport_x, viewport_y, viewport_end_x, viewport_end_y, alt_delta_n, alt_delta_s, alt_delta_w, alt_delta_e)
       end
     end

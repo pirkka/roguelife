@@ -4,8 +4,10 @@ module UISettings
   TileSize = 32
   WindowWidth = 910
   WindowHeight = 910
-  TileMode = :fuzzed
+  TileMode = :fuzzed # remove as unnecessary (deprecated by TileShadow)
   TileGradient = 5
+  TileFuzz = 0.1
+  TileShadow = 5
 end
 
 module ZOrder
